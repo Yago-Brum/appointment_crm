@@ -1,0 +1,91 @@
+/* dashboard.css */
+
+.dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .appointments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .appointment-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .appointment-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .appointment-header h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .appointment-date {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .appointment-body {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .appointment-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .appointment-actions button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .appointment-actions button:hover {
+    background-color: #45a049;
+  }
+  
+  .appointment-actions .delete-btn {
+    background-color: #f44336;
+  }
+  
+  .appointment-actions .delete-btn:hover {
+    background-color: #e53935;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #555;
+  }
+  

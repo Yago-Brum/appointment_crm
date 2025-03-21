@@ -1,15 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny  # Importa AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model, authenticate
 
-User = get_user_model()  # Garante que o modelo correto seja utilizado
+User = get_user_model()
 
 class RegisterView(APIView):
-    permission_classes = [AllowAny]  # Permite qualquer usuário acessar este endpoint
+    permission_classes = [AllowAny]  # Permite acesso anônimo
 
     def post(self, request):
         username = request.data.get('username')
@@ -32,6 +31,8 @@ class RegisterView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]  # Permite acesso anônimo para login
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')

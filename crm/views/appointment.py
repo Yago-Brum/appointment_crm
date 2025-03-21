@@ -1,23 +1,44 @@
-from rest_framework import viewsets
-from rest_framework.permissions import BasePermission, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, permissions, filters, status
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from crm.models.appointment import Appointment
 from crm.serializers.appointment import AppointmentSerializer
 
-class IsAdminOrOwner(BasePermission):
-    """Permite que admin veja todos os agendamentos e usuários comuns vejam apenas os próprios registros."""
-
-    def has_permission(self, request, view):
-        return request.user.is_authenticated
-
-    def has_object_permission(self, request, view, obj):
-        return request.user.role == "admin" or obj.owner == request.user
+# Classe de paginação personalizada
+class AppointmentPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [IsAuthenticated, IsAdminOrOwner]
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = AppointmentPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['date_hour', 'client']  # Permite filtrar por data e cliente
+    ordering_fields = ['date_hour']            # Permite ordenar pelos compromissos por data
+    ordering = ['date_hour']                   # Ordem padrão
 
     def get_queryset(self):
-        if self.request.user.role == "admin":
-            return Appointment.objects.all()  # Admin vê todos os agendamentos
-        return Appointment.objects.filter(owner=self.request.user)  # Cliente só vê os próprios agendamentos
+        user = self.request.user
+        if user.is_staff:
+            return Appointment.objects.all()  # Admin vê todos os compromissos
+        return Appointment.objects.filter(owner=user)  # Usuário vê apenas seus compromissos
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.owner != request.user and not request.user.is_staff:
+            return Response({'error': 'Você não tem permissão para editar este compromisso.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.owner != request.user and not request.user.is_staff:
+            return Response({'error': 'Você não tem permissão para excluir este compromisso.'},
+                            status=status.HTTP_403_FORBIDDEN)
+        return super().destroy(request, *args, **kwargs)
