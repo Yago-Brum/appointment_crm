@@ -15,11 +15,9 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      console.log("Attempting login with:", { username, password }); // Log login data
-      const response = await axios.post('http://127.0.0.1:8000/auth/login/', { username, password });
-      console.log("Login response:", response.data); // Log the entire response
+      const response = await axios.post('http://192.168.2.24:8000/auth/login/', { username, password });
       localStorage.setItem('token', response.data.access);
-      navigate('/dashboard');
+      navigate('/dashboard'); // Redirect to dashboard after login
     } catch (error) {
       handleError(error);
     }
@@ -29,8 +27,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/register/', { username, password, email });
-      // Handle successful registration (e.g., redirect to login)
+      await axios.post('http://192.168.2.24:8000/auth/register/', { username, password, email });
       alert('Registration successful! Please log in.');
       setIsRegistering(false); // Switch back to login mode
     } catch (error) {
@@ -39,7 +36,6 @@ const Login = () => {
   };
 
   const handleError = (error) => {
-    console.error('Error:', error);
     if (error.response && error.response.data) {
       setError(error.response.data.detail || error.response.data.non_field_errors?.[0] || 'Registration/Login failed.');
     } else {

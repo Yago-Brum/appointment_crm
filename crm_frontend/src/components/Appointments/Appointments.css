@@ -1,0 +1,213 @@
+.appointments {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Cabeçalho dos Appointments */
+  .appointments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .appointments-header h2 {
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* Botão "+ New Appointment" */
+  .new-appointment-btn {
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    color: #333; /* Fonte preta */
+    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem; /* Fonte um pouco menor */
+    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    transition: background-color 0.3s ease;
+  }
+  
+  .new-appointment-btn:hover {
+    background-color: #e0e0e0; /* Tom mais escuro de cinza */
+  }
+  
+  /* Lista de Appointments */
+  .appointments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Cards dos Appointments */
+  .appointment-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .appointment-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .appointment-header h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .appointment-date {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .appointment-body {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .appointment-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .appointment-actions button {
+    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    font-size: 0.9rem; /* Fonte um pouco menor */
+    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Botão Delete */
+  .appointment-actions .delete-btn {
+    background-color: #ffcccc; /* Fundo vermelho claro */
+    color: #f44336; /* Fonte vermelha */
+  }
+  
+  .appointment-actions .delete-btn:hover {
+    background-color: #ffb3b3; /* Tom mais escuro de vermelho */
+  }
+  
+  /* Botão Edit */
+  .appointment-actions .edit-btn {
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    color: #333; /* Fonte preta */
+  }
+  
+  .appointment-actions .edit-btn:hover {
+    background-color: #e0e0e0; /* Tom mais escuro de cinza */
+  }
+  
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal Container */
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .modal-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Form */
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .modal-content label {
+    font-weight: bold;
+  }
+  
+  .modal-content input,
+  .modal-content select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  /* Botões dentro do Modal */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .save-btn {
+    background-color: #333; /* Fundo preto */
+    color: white;
+    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    border: none;
+    cursor: pointer;
+    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-btn:hover {
+    background-color: #444; /* Tom mais escuro de preto */
+  }
+  
+  .cancel-btn {
+    background-color: #ffcccc; /* Fundo vermelho claro */
+    color: #f44336; /* Fonte vermelha */
+    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    border: none;
+    cursor: pointer;
+    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #ffb3b3; /* Tom mais escuro de vermelho */
+  }
+  
+  /* Animação para o modal aparecer suavemente */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

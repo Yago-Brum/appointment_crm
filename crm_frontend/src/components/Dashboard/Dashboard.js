@@ -1,93 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axiosInstance';
-import moment from 'moment';
-import { FaUserAlt, FaRegCalendarAlt, FaEdit, FaTrash } from 'react-icons/fa'; // Ícones
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [appointments, setAppointments] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [appointmentsToday, setAppointmentsToday] = useState(0);
+  const [recentCustomers, setRecentCustomers] = useState([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchDashboardData = async () => {
       try {
-        setLoading(true);
+        const customersResponse = await axiosInstance.get('/clients/');
+        setTotalCustomers(customersResponse.data.length);
 
         const appointmentsResponse = await axiosInstance.get('/appointments/');
-        const appointmentsData = appointmentsResponse.data.results || [];
+        const appointments = appointmentsResponse.data.results || [];
+        const today = new Date().toISOString().split('T')[0];
 
-        const clientsResponse = await axiosInstance.get('/clients/');
-        const clientsData = clientsResponse.data || [];
+        const todayAppointments = appointments.filter((appointment) =>
+          appointment.date_hour.startsWith(today)
+        );
+        setAppointmentsToday(todayAppointments.length);
 
-        const clientsMap = {};
-        clientsData.forEach((client) => {
-          clientsMap[client.id] = client;
-        });
+        setRecentCustomers(customersResponse.data.slice(0, 4));
 
-        const appointmentsWithClientNames = appointmentsData.map((appointment) => ({
-          ...appointment,
-          clientName: clientsMap[appointment.client] ? clientsMap[appointment.client].name : 'Desconhecido',
-        }));
-
-        setAppointments(appointmentsWithClientNames); // Atualizar os agendamentos com o nome do cliente
+        const upcoming = appointments.filter(
+          (appointment) => new Date(appointment.date_hour) > new Date()
+        );
+        setUpcomingAppointments(upcoming);
       } catch (error) {
-        setError(error);
-        console.error("Erro ao buscar dados:", error);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching dashboard data:', error);
       }
     };
 
-    fetchAppointments();
+    fetchDashboardData();
   }, []);
-
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) {
-    return (
-      <div>
-        <h2>Error Loading Appointments</h2>
-        <p>Error: {error.message}</p>
-        <p>Check your network connection and authentication.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="dashboard">
-      <h2>Appointments</h2>
-      {appointments.length === 0 ? (
-        <p>No appointments found.</p>
-      ) : (
-        <div className="appointments-list">
-          {appointments.map((appointment) => (
-            <div className="appointment-card" key={appointment.id}>
-              <div className="appointment-header">
-                <h3>{appointment.description}</h3>
-                <span className="appointment-date">
-                  {moment(appointment.date_hour).format('DD MMM YYYY, h:mm A')}
-                </span>
-              </div>
-              <div className="appointment-body">
-                <p>
-                  <FaUserAlt /> Client: {appointment.clientName}
-                </p>
-                <p>
-                  <FaRegCalendarAlt /> Date: {moment(appointment.date_hour).format('MMMM Do YYYY')}
-                </p>
-              </div>
-              <div className="appointment-actions">
-                <button className="edit-btn">
-                  <FaEdit /> Edit
-                </button>
-                <button className="delete-btn">
-                  <FaTrash /> Delete
-                </button>
-              </div>
-            </div>
-          ))}
+      <h2>Dashboard</h2>
+      <div className="dashboard-summary">
+        <div className="summary-card">
+          <h3>Total Customers</h3>
+          <p>{totalCustomers}</p>
+          <span>+12% from last month</span>
         </div>
-      )}
+        <div className="summary-card">
+          <h3>Appointments Today</h3>
+          <p>{appointmentsToday}</p>
+          <span>3 completed, 5 upcoming</span>
+        </div>
+      </div>
+      <div className="dashboard-details">
+        <div className="upcoming-appointments">
+          <h3>Upcoming Appointments</h3>
+          <ul>
+            {upcomingAppointments.slice(0, 3).map((appointment) => (
+              <li key={appointment.id}>
+                <div>
+                  <p><strong>{appointment.clientName}</strong></p>
+                  <span>{appointment.serviceType}</span>
+                </div>
+                <div>
+                  <span>
+                    {new Date(appointment.date_hour).toLocaleDateString('en-US', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}{' '}
+                    at{' '}
+                    {new Date(appointment.date_hour).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </span>
+                  <span>Duration: 30 min</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="recent-customers">
+          <h3>Recent Customers</h3>
+          <p>New customers from the past week</p>
+          <ul>
+            {recentCustomers.map((customer) => (
+              <li key={customer.id}>
+                <p>{customer.name}</p>
+                <span>Added {Math.floor(Math.random() * 7) + 1} days ago</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

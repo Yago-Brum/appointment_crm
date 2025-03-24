@@ -22,7 +22,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
+        print(f"Usuário autenticado: {user}, Superusuário: {user.is_superuser}")
+        
+        if user.is_superuser:
             return Appointment.objects.all()  # Admin vê todos os compromissos
         return Appointment.objects.filter(owner=user)  # Usuário vê apenas seus compromissos
 
