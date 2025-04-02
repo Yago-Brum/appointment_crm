@@ -153,6 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://192.168.2.24:3000",
+    "https://appointment-crm.netlify.app",
 ]
 
 ALLOWED_HOSTS = ["192.168.2.24", "localhost"]
