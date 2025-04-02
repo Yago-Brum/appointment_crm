@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!b+(r)nlwx)%1ki_!1=u-$h#=+o(3@%4%x07l$zddm6()qz5)o'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-!b+(r)nlwx)%1ki_!1=u-$h#=+o(3@%4%x07l$zddm6()qz5)o")
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+PORT = os.getenv("PORT", "8000")
 
 ALLOWED_HOSTS = []
 
@@ -143,10 +148,10 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = "crm.CustomUser"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://192.168.2.24:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "http://192.168.2.24:3000",
+# ]
 
-ALLOWED_HOSTS = ["192.168.2.24", "localhost"]
+# ALLOWED_HOSTS = ["192.168.2.24", "localhost"]

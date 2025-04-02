@@ -28,7 +28,7 @@ const Dashboard = () => {
         // Get clients data and create a map for client names
         const clientsResponse = await axiosInstance.get('/clients/');
         const clientsData = clientsResponse.data || [];
-        const clientsMap = {};
+        const clientsMap = {};https://railway.com/project/2a3fdc22-aecc-4ec6-921b-a860cf0635c3/logs?environmentId=74f85ef7-8350-4a87-976b-cd143907f723
         clientsData.forEach((client) => {
           clientsMap[client.id] = client;
         });
