@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+
 const axiosInstance = axios.create({
-  baseURL: 'https://appointment-crm.onrender.com/api/', // Endereço da sua API
+  baseURL: process.env.REACT_APP_API_URL,  // Usando a variável de ambiente
   headers: {
     'Content-Type': 'application/json',
   },
