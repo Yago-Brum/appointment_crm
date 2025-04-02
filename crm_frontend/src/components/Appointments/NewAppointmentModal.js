@@ -67,18 +67,10 @@ const NewAppointmentModal = ({ isOpen, onClose, onAppointmentCreated, editingApp
 
       if (editingAppointment) {
         await axiosInstance.put(`/appointments/${editingAppointment.id}/`, appointmentData);
-        setSuccessMessage('Appointment was successfully updated.');
-        onAppointmentCreated(); // Updates the appointments list
-        setTimeout(() => {
-          onClose(); // Close the modal after successful update
-        }, 1500); // Wait for 1.5 seconds to show the success message
+        await onAppointmentCreated(); // This will handle the update and modal closing
       } else {
         await axiosInstance.post('/appointments/', appointmentData);
-        setSuccessMessage('Appointment was successfully created.');
-        onAppointmentCreated(); // Updates the appointments list
-        setTimeout(() => {
-          onClose(); // Close the modal after successful creation
-        }, 1500); // Wait for 1.5 seconds to show the success message
+        await onAppointmentCreated(); // This will handle the update and modal closing
       }
     } catch (error) {
       console.error('Error saving appointment:', error);

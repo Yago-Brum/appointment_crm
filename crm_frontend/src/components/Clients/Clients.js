@@ -1,5 +1,5 @@
 // Clients.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axiosInstance from '../../axiosInstance';
 import { FaUserAlt, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './Clients.css';
@@ -17,10 +17,9 @@ const Clients = () => {
   });
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [updatedClientId, setUpdatedClientId] = useState(null);
   const [isHiding, setIsHiding] = useState(false);
 
-  const fetchClients = async () => {
+  const fetchClients = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get('/clients/');
@@ -31,11 +30,11 @@ const Clients = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchClients();
-  }, []);
+  }, [fetchClients]);
 
   useEffect(() => {
     if (successMessage) {
@@ -115,15 +114,15 @@ const Clients = () => {
     try {
       if (editingClient) {
         await axiosInstance.put(`/clients/${editingClient.id}/`, formData);
+        handleModalClose();
         setSuccessMessage(`${formData.name} was successfully updated.`);
-        setUpdatedClientId(editingClient.id);
+        fetchClients();
       } else {
-        const response = await axiosInstance.post('/clients/', formData);
+        await axiosInstance.post('/clients/', formData);
+        handleModalClose();
         setSuccessMessage(`${formData.name} was successfully created.`);
-        setUpdatedClientId(response.data.id);
+        fetchClients();
       }
-      fetchClients();
-      handleModalClose();
     } catch (error) {
       console.error('Error saving client:', error);
       if (error.response?.data) {
@@ -170,6 +169,12 @@ const Clients = () => {
           </div>
         )}
 
+        {successMessage && (
+          <div className={`success-message ${isHiding ? 'hide' : ''}`}>
+            {successMessage}
+          </div>
+        )}
+
         {clients.length === 0 ? (
           <p className="no-clients">No clients found. Click "New Client" to add your first client.</p>
         ) : (
@@ -204,43 +209,44 @@ const Clients = () => {
           <div className="modal-content">
             <h2>{editingClient ? 'Edit Client' : 'New Client'}</h2>
             {formError && <div className="form-error">{formError}</div>}
-            {successMessage && (
-              <div className={`success-message ${isHiding ? 'hide' : ''}`}>
-                {successMessage}
-              </div>
-            )}
             <form onSubmit={handleSubmit}>
-              <label>Name: <span className="required">*</span></label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter client name"
-                required
-              />
+              <div className="form-group">
+                <label>Name: <span className="required">*</span></label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter client name"
+                  required
+                />
+              </div>
 
-              <label>Email: <span className="required">*</span></label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Enter client email"
-                required
-              />
+              <div className="form-group">
+                <label>Email: <span className="required">*</span></label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter client email"
+                  required
+                />
+              </div>
 
-              <label>Phone:</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder="Enter client phone"
-              />
+              <div className="form-group">
+                <label>Phone:</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="Enter client phone"
+                />
+              </div>
 
-              <div className="form-info">
-                <p><span className="required">*</span> Required fields</p>
+              <div className="required-fields-note">
+                <span className="required">*</span> Required fields
               </div>
 
               <div className="modal-buttons">

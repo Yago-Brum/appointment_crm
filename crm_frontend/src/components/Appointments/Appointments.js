@@ -15,6 +15,7 @@ const Appointments = () => {
   const [newAppointment, setNewAppointment] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const location = useLocation();
+  const [isHiding, setIsHiding] = useState(false);
 
   const fetchAppointments = useCallback(async () => {
     try {
@@ -37,23 +38,21 @@ const Appointments = () => {
       }));
 
       setAppointments(appointmentsWithClientNames);
-
-      // Update editingAppointment if it exists and matches an updated appointment
-      if (editingAppointment) {
-        const updatedAppointment = appointmentsWithClientNames.find(
-          (app) => app.id === editingAppointment.id
-        );
-        if (updatedAppointment) {
-          setEditingAppointment(updatedAppointment);
-        }
-      }
+      setLoading(false);
     } catch (error) {
       setError(error);
       console.error('Error fetching data:', error);
-    } finally {
       setLoading(false);
     }
-  }, [editingAppointment]);
+  }, []);
+
+  const handleAppointmentUpdate = useCallback(async () => {
+    await fetchAppointments();
+    setEditingAppointment(null);
+    setNewAppointment(null);
+    setIsModalOpen(false);
+    setSuccessMessage('Appointment was successfully updated.');
+  }, [fetchAppointments]);
 
   useEffect(() => {
     fetchAppointments();
@@ -76,6 +75,19 @@ const Appointments = () => {
       window.history.replaceState({}, document.title);
     }
   }, [location, fetchAppointments]);
+
+  useEffect(() => {
+    if (successMessage) {
+      setIsHiding(false);
+      const timer = setTimeout(() => {
+        setIsHiding(true);
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 300);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const handleEdit = (appointment) => {
     setEditingAppointment(appointment);
@@ -128,6 +140,12 @@ const Appointments = () => {
         </button>
       </div>
 
+      {successMessage && (
+        <div className={`success-message ${isHiding ? 'hide' : ''}`}>
+          {successMessage}
+        </div>
+      )}
+
       {appointments.length === 0 ? (
         <p>No appointments found.</p>
       ) : (
@@ -162,11 +180,9 @@ const Appointments = () => {
       <NewAppointmentModal 
         isOpen={isModalOpen} 
         onClose={handleModalClose} 
-        onAppointmentCreated={fetchAppointments}
+        onAppointmentCreated={handleAppointmentUpdate}
         editingAppointment={editingAppointment}
         newAppointment={newAppointment}
-        successMessage={successMessage}
-        setSuccessMessage={setSuccessMessage}
       />
     </div>
   );
