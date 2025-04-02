@@ -130,7 +130,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR / "crm_frontend" / "build"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -150,10 +149,10 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = "crm.CustomUser"
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-#     "http://192.168.2.24:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://192.168.2.24:3000",
+]
 
-# ALLOWED_HOSTS = ["192.168.2.24", "localhost"]
+ALLOWED_HOSTS = ["192.168.2.24", "localhost"]
