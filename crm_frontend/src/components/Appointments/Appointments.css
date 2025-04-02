@@ -1,49 +1,56 @@
 .appointments {
     padding: 20px;
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    min-height: 100vh;
   }
   
-  /* Cabeçalho dos Appointments */
+  /* Appointments Header */
   .appointments-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .appointments-header h2 {
     font-size: 2rem;
     color: #333;
     margin: 0;
+    font-weight: bold;
   }
   
-  /* Botão "+ New Appointment" */
+  /* "+ New Appointment" Button */
   .new-appointment-btn {
-    background-color: #f0f0f0; /* Fundo cinza claro */
-    color: #333; /* Fonte preta */
-    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Black text */
+    padding: 6px 18px; /* Smaller and more rectangular size */
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.9rem; /* Fonte um pouco menor */
-    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    font-size: 0.9rem; /* Slightly smaller font */
+    border-radius: 10px; /* Softer and more rounded edges */
     transition: background-color 0.3s ease;
   }
   
   .new-appointment-btn:hover {
-    background-color: #e0e0e0; /* Tom mais escuro de cinza */
+    background-color: #e0e0e0; /* Darker shade of gray */
   }
   
-  /* Lista de Appointments */
+  /* Appointments List */
   .appointments-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
   }
   
-  /* Cards dos Appointments */
+  /* Appointment Cards */
   .appointment-card {
     background: #fff;
     border-radius: 8px;
@@ -89,31 +96,31 @@
   }
   
   .appointment-actions button {
-    padding: 6px 18px; /* Tamanho menor e mais retangular */
-    font-size: 0.9rem; /* Fonte um pouco menor */
-    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    padding: 6px 18px; /* Smaller and more rectangular size */
+    font-size: 0.9rem; /* Slightly smaller font */
+    border-radius: 10px; /* Softer and more rounded edges */
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
-  /* Botão Delete */
+  /* Delete Button */
   .appointment-actions .delete-btn {
-    background-color: #ffcccc; /* Fundo vermelho claro */
-    color: #f44336; /* Fonte vermelha */
+    background-color: #ffcccc; /* Light red background */
+    color: #f44336; /* Red text */
   }
   
   .appointment-actions .delete-btn:hover {
-    background-color: #ffb3b3; /* Tom mais escuro de vermelho */
+    background-color: #ffb3b3; /* Darker shade of red */
   }
   
-  /* Botão Edit */
+  /* Edit Button */
   .appointment-actions .edit-btn {
-    background-color: #f0f0f0; /* Fundo cinza claro */
-    color: #333; /* Fonte preta */
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Black text */
   }
   
   .appointment-actions .edit-btn:hover {
-    background-color: #e0e0e0; /* Tom mais escuro de cinza */
+    background-color: #e0e0e0; /* Darker shade of gray */
   }
   
   /* Modal Overlay */
@@ -137,7 +144,7 @@
     border-radius: 8px;
     width: 400px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-in-out;
+    animation: modalFadeIn 0.3s ease-in-out;
   }
   
   .modal-content h2 {
@@ -152,8 +159,31 @@
     gap: 10px;
   }
   
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
   .modal-content label {
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .required {
+    color: #f44336;
+    font-weight: bold;
+  }
+  
+  .required-fields-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
   
   .modal-content input,
@@ -164,50 +194,74 @@
     font-size: 1rem;
   }
   
-  /* Botões dentro do Modal */
+  /* Modal Buttons */
   .modal-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
   }
   
-  .save-btn {
-    background-color: #333; /* Fundo preto */
+  .modal-buttons .edit-btn {
+    background-color: #333;
     color: white;
-    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    padding: 6px 18px;
     border: none;
     cursor: pointer;
-    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    border-radius: 10px;
     transition: background-color 0.3s ease;
   }
   
-  .save-btn:hover {
-    background-color: #444; /* Tom mais escuro de preto */
+  .modal-buttons .edit-btn:hover {
+    background-color: #444;
   }
   
   .cancel-btn {
-    background-color: #ffcccc; /* Fundo vermelho claro */
-    color: #f44336; /* Fonte vermelha */
-    padding: 6px 18px; /* Tamanho menor e mais retangular */
+    background-color: #ffcccc;
+    color: #f44336;
+    padding: 6px 18px;
     border: none;
     cursor: pointer;
-    border-radius: 10px; /* Bordas mais suaves e arredondadas */
+    border-radius: 10px;
     transition: background-color 0.3s ease;
   }
   
   .cancel-btn:hover {
-    background-color: #ffb3b3; /* Tom mais escuro de vermelho */
+    background-color: #ffb3b3;
   }
   
-  /* Animação para o modal aparecer suavemente */
-  @keyframes fadeIn {
+  /* Animation for smooth modal appearance */
+  @keyframes modalFadeIn {
     from {
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(-20px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  .error-message {
+    color: #f44336;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .success-message {
+    color: #4caf50;
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease-out;
+  }
+  
+  .success-message.hide {
+    opacity: 0;
+    transform: translateY(-10px);
   }
   

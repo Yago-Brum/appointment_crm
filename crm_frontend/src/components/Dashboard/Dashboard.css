@@ -1,12 +1,19 @@
 .dashboard {
   padding: 20px;
   font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  min-height: 100vh;
 }
 
-h2 {
+.dashboard h2 {
   font-size: 2rem;
-  color: #000;
+  color: #333;
   margin-bottom: 20px;
+  font-weight: bold;
+  background-color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-summary {
@@ -59,8 +66,9 @@ h2 {
 .upcoming-appointments h3,
 .recent-customers h3 {
   font-size: 1.5rem;
-  color: #000;
+  color: #333;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .upcoming-appointments p,
@@ -91,6 +99,13 @@ h2 {
 .recent-customers li p {
   font-size: 1rem;
   color: #333;
+}
+
+.client-name {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+  font-weight: normal;
 }
 
 .upcoming-appointments li div:last-child span,

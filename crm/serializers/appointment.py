@@ -28,16 +28,26 @@ class AppointmentSerializer(serializers.ModelSerializer):
         return value
     
     def validate_date_hour(self, value):
-        if value < now():
-            raise serializers.ValidationError("A data e hora não podem estar no passado.")
+        # Only validate future dates for new appointments
+        if not self.instance and value < now():
+            raise serializers.ValidationError("Appointment date cannot be in the past")
         return value
 
     def validate(self, data):
         client = data.get('client')
         date_hour = data.get('date_hour')
+        instance = getattr(self, 'instance', None)
 
-        if Appointment.objects.filter(client=client, date_hour=date_hour).exists():
-            raise serializers.ValidationError("Este cliente já tem um compromisso neste horário.")
+        # Check for existing appointments at the same time
+        existing_appointment = Appointment.objects.filter(
+            client=client,
+            date_hour=date_hour
+        ).exclude(id=instance.id if instance else None).first()
+
+        if existing_appointment:
+            raise serializers.ValidationError({
+                "date_hour": f"This client already has an appointment at {date_hour}"
+            })
 
         return data
 

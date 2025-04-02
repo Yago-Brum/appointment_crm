@@ -33,14 +33,20 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.owner != request.user and not request.user.is_staff:
-            return Response({'error': 'Você não tem permissão para editar este compromisso.'},
-                            status=status.HTTP_403_FORBIDDEN)
+        # Permite edição se o usuário for o dono do compromisso ou for admin
+        if instance.owner != request.user and not request.user.is_superuser:
+            return Response(
+                {'error': 'Você não tem permissão para editar este compromisso.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.owner != request.user and not request.user.is_staff:
-            return Response({'error': 'Você não tem permissão para excluir este compromisso.'},
-                            status=status.HTTP_403_FORBIDDEN)
+        # Permite exclusão se o usuário for o dono do compromisso ou for admin
+        if instance.owner != request.user and not request.user.is_superuser:
+            return Response(
+                {'error': 'Você não tem permissão para excluir este compromisso.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
         return super().destroy(request, *args, **kwargs)

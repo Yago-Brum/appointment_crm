@@ -21,4 +21,18 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+// Handle 401 errors and redirect to login
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear token
+      localStorage.removeItem('token');
+      // Redirect to login
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;
