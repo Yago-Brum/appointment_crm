@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('http://192.168.2.24:8000/auth/login/', { username, password });
+      const response = await axios.post('${process.env.REACT_APP_API_URL}:8000/auth/login/', { username, password });
       login(response.data.access);
       navigate('/dashboard');
     } catch (error) {
@@ -29,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://192.168.2.24:8000/auth/register/', { username, password, email });
+      await axios.post('${process.env.REACT_APP_API_URL}/auth/register/', { username, password, email });
       alert('Registration successful! Please log in.');
       setIsRegistering(false);
     } catch (error) {
