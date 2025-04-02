@@ -4,9 +4,9 @@ from crm.views.client import ClientViewSet
 from crm.views.appointment import AppointmentViewSet
 
 router = DefaultRouter()
-router.register(r'clients', ClientViewSet, basename='client')
-router.register(r'appointments', AppointmentViewSet, basename='appointment')
+router.register(r'clients', ClientViewSet, basename='client')  # /api/clients/
+router.register(r'appointments', AppointmentViewSet, basename='appointment')  # /api/appointments/
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),  # Inclui as URLs do router (API)
 ]
