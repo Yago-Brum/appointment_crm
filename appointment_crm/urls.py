@@ -19,7 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('crm.urls.api')),  # Inclui as rotas do app crm
-    path('', include('crm.urls.auth')),
-      # Inclui as rotas de autenticação  # Rotas da API do app crm
+    path('api/', include('crm.urls.api')),  # Prefixo para rotas da API
+    path('auth/', include('crm.urls.auth')),  # Prefixo para rotas de autenticação
 ]
