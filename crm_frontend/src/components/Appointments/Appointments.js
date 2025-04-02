@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axiosInstance from '../../axiosInstance';
 import moment from 'moment';
 import { FaUserAlt, FaRegCalendarAlt, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
@@ -16,7 +16,7 @@ const Appointments = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const location = useLocation();
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -53,7 +53,7 @@ const Appointments = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [editingAppointment]);
 
   useEffect(() => {
     fetchAppointments();
@@ -75,7 +75,7 @@ const Appointments = () => {
       // Clear the state after opening the modal
       window.history.replaceState({}, document.title);
     }
-  }, [location]);
+  }, [location, fetchAppointments]);
 
   const handleEdit = (appointment) => {
     setEditingAppointment(appointment);
