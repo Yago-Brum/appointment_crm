@@ -23,14 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-!b+(r)nlwx)%1ki_!1=u-$h#=+o(3@%4%x07l$zddm6()qz5)o")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 PORT = os.getenv("PORT", "8000")
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -156,4 +152,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://appointment-crm.netlify.app",
 ]
 
-ALLOWED_HOSTS = ["192.168.2.24", "localhost"]
+ALLOWED_HOSTS = [
+    "192.168.2.24", 
+    "localhost",
+    "appointment-crm.onrender.com",
+    "https://appointment-crm.onrender.com",
+    ]
